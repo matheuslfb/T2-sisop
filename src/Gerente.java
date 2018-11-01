@@ -39,7 +39,7 @@ public class Gerente {
 	private int start, end, size;
 
 	public Gerente(int modo) {
-		bloco(start, end, size);
+		this.bloco = new Bloco(start, end, size);
 
 	}
 
@@ -60,8 +60,11 @@ public class Gerente {
 		while ((line = in.readLine()) != null) {
 			String info[] = line.split(" ");
 
-			if (info[0] == "S") {
-				solicita();
+			//TODO
+			//pegar o valor da solicitação de info e passar para o metodo solicita()
+			
+			if (info[0] == "S") { // verifica se é solicitacao
+				solicita(); // executa a solicitacao passando o valor requerido
 			}
 
 		}
