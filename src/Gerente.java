@@ -2,77 +2,37 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Gerente {
+public class Gerente {	
 
-	private int MODO; // 1 = modo fixo; 2 = modo aleatório
-
-	private class Bloco {
-
-		private int start;
-		private int end;
-		private int size;
-
-		public Bloco(int start, int end, int size) {
-			this.start = start;
-			this.end = end;
-			this.size = size;
-		}
-
-		public int getStart() {
-			return this.start;
-		}
-
-		public int getEnd() {
-			return this.end;
-		}
-
-		public int getSize() {
-			return this.size;
-		}
-
+	private Bloco memoria;
+	private ArrayList<Bloco> blocos;
+	
+	
+	//variaveis auxiliares para manipular a Memoria
+	
+	private int tamTotalMemoria, tamDisponivel;
+	
+	public Gerente(int start, int end) {
+		this.memoria = new Bloco(start, end);
+		blocos = new ArrayList<>();
 	}
 
-	private Bloco bloco;
-
-	private int start, end, size;
-
-	public Gerente(int modo) {
-		this.bloco = new Bloco(start, end, size);
-
+	public Bloco getMemoriaTotal() {
+		return memoria;
 	}
-
-	public void readFile() throws FileNotFoundException, IOException {
-
-		Scanner s = new Scanner(System.in);
-		System.out.println("Digite o nome do arquivo de entrada (sem extensão .txt)");
-		String enter = s.nextLine();
-		System.out.println();
-		System.out.println("====================================================================================");
-		BufferedReader in = new BufferedReader(new FileReader(enter + ".txt"));
-		String line;
-
-		MODO = Integer.parseInt(in.readLine());
-		start = Integer.parseInt(in.readLine());
-		end = Integer.parseInt(in.readLine());
-
-		while ((line = in.readLine()) != null) {
-			String info[] = line.split(" ");
-
-			//TODO
-			//pegar o valor da solicitação de info e passar para o metodo solicita()
-			
-			if (info[0] == "S") { // verifica se é solicitacao
-				solicita(); // executa a solicitacao passando o valor requerido
-			}
-
+	
+	public void addBloco(Bloco b) {
+		this.blocos.add(b);
+	}
+	
+	public void printBlocos() {
+		for(Bloco b: blocos) {
+			System.out.println(b.toString());
 		}
-		in.close();
 	}
-
-	public void solicita(int val) {
-
-	}
+	
 
 }
