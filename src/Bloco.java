@@ -36,6 +36,8 @@ public class Bloco {
 		this.ID = id;
 	}
 	
+	public int getID(){return this.ID;}
+	
 	public String toString() {
 		return this.start+"-"+this.end+" // Bloco - "+ID;
 	}

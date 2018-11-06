@@ -21,7 +21,7 @@ public class App {
 
 		Scanner s = new Scanner(System.in);
 		System.out.println("Digite o nome do arquivo de entrada (sem extensão .txt)");
-		String enter = s.nextLine();
+		String enter = s.nextLine(); // le o nome do arquivo de entrada
 		System.out.println();
 		System.out.println("====================================================================================");
 		BufferedReader in = new BufferedReader(new FileReader(enter + ".txt"));
@@ -32,11 +32,11 @@ public class App {
 		end = Integer.parseInt(in.readLine());
 
 		int count = 0; // quantidade de solicitacoes de memoria
-		Gerente g = new Gerente(start, end);
+		Gerente g = new Gerente(start, end); // cria um objeto do tipo do gerente
 		int solicitacao = 0;// tamanho da solicitacao de alocacao de memoria
 
 		try {
-			while ((line = in.readLine()) != null) {
+			while ((line = in.readLine()) != null) {// faz a leitura do arquivo
 				String info[] = line.split(" ");
 				for (String a : info) {
 					System.out.print(a);
@@ -48,16 +48,18 @@ public class App {
 				if (info[0].equals("S")) { // verifica se é solicitacao
 					count++; // executa a solicitacao passando o valor requerido
 
-					solicitacao = Integer.parseInt(info[1]);
+					solicitacao = Integer.parseInt(info[1]);// tamanho solicitado
 
-					Bloco b = new Bloco(g.getMemoriaTotal().getStart(), solicitacao + g.getMemoriaTotal().getStart());
+					Bloco b = new Bloco();
 					b.setID(count);
 
-					g.addBloco(b);
+					g.addBlocoMemoriaOcupada(b);
+					
+					//Bloco aux = b;
 
 				}
 
-				System.out.println("Tamanho da solicitação:" + solicitacao);
+				//System.out.println("Tamanho da solicitação:" + solicitacao);
 
 				g.printBlocos();
 			}
