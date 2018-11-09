@@ -8,49 +8,57 @@ import java.util.Scanner;
 
 public class Gerente {
 
-	private Bloco memoria;
+	private Bloco blocoInicial;
 	private LinkedList<Bloco> memoriaLivre;
 	private LinkedList<Bloco> memoriaOcupada;
 
 	// variaveis auxiliares para manipular a Memoria
 
-	private int memTotal, memDisponivel;
+	private int qntdMemDisponivel;
 
-	private Bloco atual;
-
-	public Gerente(int start, int end) {
-		this.memoria = new Bloco(start, end);
+	public Gerente(Bloco b) {
 		memoriaOcupada = new LinkedList();
 		memoriaLivre = new LinkedList();
 
-		addBlocoMemoriaOcupada(memoria);
+		this.blocoInicial = b;
+		atualizaMemDisponivel();
+
 	}
 
-	public int getMemoriaTotal() {
-		for (Bloco b : memoriaLivre) {
-			memTotal += b.getStart() - b.getEnd();
-		}
-		return memTotal;
+	// adiciona o bloco a lista de memoria ocupada
+	public void addBlocoMemoriaOcupada(int solicitacao, int ID) {
+
+		Bloco b = new Bloco(blocoInicial.getStart(), blocoInicial.getStart() + solicitacao);
+		b.setID(ID);
+		memoriaOcupada.add(b);
+		atualizaBlocoInicial(b);
 	}
 
-	//adiciona o bloco, atravez da solicitacao 
-	public void addBlocoMemoriaOcupada(int valor) {
-		if (verificaMemoria()) {
-			Bloco b = new Bloco();
-
-			atualizaMemoria(b);
-			memoriaOcupada.add(b);
-		}
+	public void atualizaBlocoInicial(Bloco b) {
+		blocoInicial.setStart(blocoInicial.getStart() + b.getEnd());
+		atualizaMemDisponivel();
 	}
 
-	
-	//Atualiza memoria disponivel
-	public void atualizaMemoria(Bloco b) { 
-		atual.setStart(atual.getStart() + b.getStart());
+	// atualiza o valor de memoria disponivel do bloco inicial
+	public void atualizaMemDisponivel() {
+		qntdMemDisponivel = blocoInicial.getStart() - blocoInicial.getEnd();
+
 	}
 
-	
-	//procura se o bloco existe e se esta na lista de memoria ocupada
+	// verifica se tem memoria disponivel para alocar o bloco solicitado
+	public boolean verificaMemDisponivel(int solicitacao) {
+		if (solicitacao > qntdMemDisponivel) {
+			return true;
+		} else
+			return false;
+	}
+
+	// retorna o bloco inicial com a memoria disponivel
+	public Bloco getBlocoMemoriaDisponivel() {
+		return blocoInicial;
+	}
+
+	// procura se o bloco existe e se esta na lista de memoria ocupada
 	public boolean searchBlocoMemOcupada(Bloco b) {
 		for (Bloco x : memoriaOcupada) {
 			if (b.getID() == b.getID()) {
@@ -60,28 +68,12 @@ public class Gerente {
 		return false;
 	}
 
-	// public boolean removeBlocoMemoriaOcupada(Bloco b) {
-	// if(searchBlocoMemOcupada(b)) {
-	//
-	// }
-	// }
-
-	public int getMemTotal() {
-		return memTotal;
+	// retorna o ultimo bloco da lista de memoria ocupada
+	public Bloco getUltimoBloco() {
+		return memoriaOcupada.getLast();
 	}
 
-	public int getMemDisponivel() {
-		return memDisponivel;
-	}
-
-	public void liberaMemTotal(int val) {
-		this.memDisponivel = this.memDisponivel + val;
-	}
-
-	public void diminuiMemTotal(int val) {
-		this.memDisponivel = this.memDisponivel - val;
-	}
-
+	// print dos blocos
 	public void printBlocos() {
 		for (Bloco b : memoriaOcupada) {
 			System.out.println(" " + b.toString());

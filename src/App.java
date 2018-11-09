@@ -31,42 +31,47 @@ public class App {
 		start = Integer.parseInt(in.readLine());
 		end = Integer.parseInt(in.readLine());
 
+		Bloco blocoInicial = new Bloco(start, end); // cria o bloco inicial com a memoria disponivel
+
+		Gerente g = new Gerente(blocoInicial); // cria um objeto do tipo do gerente
+
 		int count = 0; // quantidade de solicitacoes de memoria
-		Gerente g = new Gerente(start, end); // cria um objeto do tipo do gerente
-		int solicitacao = 0;// tamanho da solicitacao de alocacao de memoria
+
+		int solicitacao = 0;// tamanho da solicitacao de alocacao de memoria para cada bloco
 
 		try {
 			while ((line = in.readLine()) != null) {// faz a leitura do arquivo
 				String info[] = line.split(" ");
-				for (String a : info) {
-					System.out.print(a);
+
+				for (String a : info) { // print teste
+					System.out.println(a);
 				}
 
-				// TODO
-				// pegar o valor da solicitação de info e passar para o metodo solicita()
-				// System.out.println(info[0]);
-				if (info[0].equals("S")) { // verifica se é solicitacao
-					count++; // executa a solicitacao passando o valor requerido
+				if (info[0].equals("S")) { // verifica se o comando lido é de solicitacao
 
-					solicitacao = Integer.parseInt(info[1]);// tamanho solicitado
+					solicitacao = Integer.parseInt(info[1]);// tamanho solicitado do bloco
 
-					Bloco b = new Bloco();
-					b.setID(count);
-
-					g.addBlocoMemoriaOcupada(b);
-					
-					//Bloco aux = b;
+					if (g.verificaMemDisponivel(solicitacao)) {
+						g.addBlocoMemoriaOcupada(solicitacao, count);
+						count++;
+					}
+					// else if (!g.verificaMemDisponivel(solicitacao)) {
+					// System.out.println("Fragmentação externa!");
+					// }
 
 				}
+				// if (info[0].equals("L")) {
+				//
+				// }
 
-				//System.out.println("Tamanho da solicitação:" + solicitacao);
+				// System.out.println("Tamanho da solicitação:" + solicitacao);
 
-				g.printBlocos();
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
 			System.err.print(e);
 		}
+		g.printBlocos();
 		System.out.println("Quantidade de solicitações: " + count);
 
 	}
