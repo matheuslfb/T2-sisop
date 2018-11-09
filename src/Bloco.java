@@ -39,7 +39,7 @@ public class Bloco {
 	public int getID(){return this.ID;}
 	
 	public String toString() {
-		return this.start+"-"+this.end+" // Bloco - "+ID;
+		return this.start+"-"+this.end+" | Bloco - "+ID;
 	}
 
 }

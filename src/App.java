@@ -43,9 +43,9 @@ public class App {
 			while ((line = in.readLine()) != null) {// faz a leitura do arquivo
 				String info[] = line.split(" ");
 
-				for (String a : info) { // print teste
-					System.out.println(a);
-				}
+				// for (String a : info) { // print teste
+				// System.out.println(a);
+				// }
 
 				if (info[0].equals("S")) { // verifica se o comando lido é de solicitacao
 
@@ -54,10 +54,10 @@ public class App {
 					if (g.verificaMemDisponivel(solicitacao)) {
 						g.addBlocoMemoriaOcupada(solicitacao, count);
 						count++;
+						System.out.println("Tamanho total de memoria disponivel: " + g.getMemoriaDisponivel());
+					} else if (!g.verificaMemDisponivel(solicitacao)) {
+						System.out.println("Fragmentação externa!");
 					}
-					// else if (!g.verificaMemDisponivel(solicitacao)) {
-					// System.out.println("Fragmentação externa!");
-					// }
 
 				}
 				// if (info[0].equals("L")) {
