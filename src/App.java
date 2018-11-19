@@ -60,9 +60,10 @@ public class App {
 					}
 
 				}
-				// if (info[0].equals("L")) {
-				//
-				// }
+				if (info[0].equals("L")) {
+					g.liberaBloco(Integer.parseInt(info[1]));
+					System.out.print( g.getMemDisponivelPorBloco());
+				}
 
 				// System.out.println("Tamanho da solicitação:" + solicitacao);
 
