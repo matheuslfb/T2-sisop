@@ -54,25 +54,23 @@ public class App {
 					if (g.verificaMemDisponivel(solicitacao)) {
 						g.addBlocoMemoriaOcupada(solicitacao, count);
 						count++;
-						System.out.println("Tamanho total de memoria disponivel: " + g.getMemoriaDisponivel());
+						// System.out.println("Tamanho total de memoria disponivel: " +
+						// g.getMemoriaDisponivel());
 					} else if (!g.verificaMemDisponivel(solicitacao)) {
-						System.out.println("Fragmentação externa!");
 					}
 
 				}
 				if (info[0].equals("L")) {
 					g.liberaBloco(Integer.parseInt(info[1]));
-					System.out.print( g.getMemDisponivelPorBloco());
 				}
 
-				// System.out.println("Tamanho da solicitação:" + solicitacao);
 
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
 			System.err.print(e);
 		}
-		g.printBlocos();
+		g.printListaMemoriaOcupada();
 		System.out.println("Quantidade de solicitações: " + count);
 
 	}
