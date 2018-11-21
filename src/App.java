@@ -35,7 +35,7 @@ public class App {
 
 		Gerente g = new Gerente(blocoInicial); // cria um objeto do tipo do gerente
 
-		int count = 0; // quantidade de solicitacoes de memoria
+		int count = 1; // quantidade de solicitacoes de memoria
 
 		int solicitacao = 0;// tamanho da solicitacao de alocacao de memoria para cada bloco
 
@@ -71,6 +71,7 @@ public class App {
 			System.err.print(e);
 		}
 		g.printListaMemoriaOcupada();
+		g.printListaLivre();
 		System.out.println("Quantidade de solicitações: " + count);
 
 	}

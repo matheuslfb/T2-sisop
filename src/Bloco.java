@@ -10,6 +10,7 @@ public class Bloco {
 	public Bloco(int start, int end) {
 		this.start = start;
 		this.end = end;
+		setSize();
 	}
 
 	public int getTamBloco() {
@@ -22,6 +23,10 @@ public class Bloco {
 
 	public int getEnd() {
 		return this.end;
+	}
+
+	public void setSize() {
+		size = end - start;
 	}
 
 	public int getSize() {
