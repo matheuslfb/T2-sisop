@@ -65,7 +65,7 @@ public class Gerente {
 	public void atualizaMemDisponivel() {
 		int count = 0;
 		for (Bloco b : memoriaLivre) {
-			count += b.getSize();
+			count += b.getTamBloco();
 		}
 		totalMemoriaDisponivel = count;
 
