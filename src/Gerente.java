@@ -16,7 +16,7 @@ public class Gerente {
 	private Bloco blocoInicial;
 	private LinkedList<Bloco> memoriaLivre;
 	private LinkedList<Bloco> memoriaOcupada;
-	private LinkedList<Bloco> aguardando;
+	private ArrayList<Integer> aguardando;
 
 	// variaveis auxiliares para manipular a Memoria
 
@@ -25,7 +25,7 @@ public class Gerente {
 	public Gerente(Bloco b) {
 		memoriaOcupada = new LinkedList();
 		memoriaLivre = new LinkedList();
-		aguardando = new LinkedList<>();
+		aguardando = new ArrayList();
 
 		blocoInicial = b;
 		memoriaLivre.add(b);
@@ -55,6 +55,8 @@ public class Gerente {
 		atualizaMemDisponivel();
 	}
 
+	// atualiza o tamanho do bloco que é compativel, diminuindo com o valor da
+	// solicitacao
 	public void atualizaBlocoCompativel(Bloco b) {
 		getCompativel(b.getTamBloco()).setStart(b.getEnd());
 		// blocoInicial.setStart(b.getEnd());
@@ -71,6 +73,7 @@ public class Gerente {
 
 	}
 
+	// procura um bloco com tamanho compativel com a solicitacao
 	public Bloco getCompativel(int solicitacao) {
 		Bloco aux = null;
 		for (Bloco b : memoriaLivre) {
@@ -91,30 +94,52 @@ public class Gerente {
 		return false;
 	}
 
+	public void addAguardando(int solicitacao) {
+		aguardando.add(solicitacao);
+	}
+
 	// verifica se tem memoria disponivel para alocar o bloco solicitado
-	public boolean verificaMemDisponivel(int solicitacao) {
+	public boolean verificaMemDisponivel(int solicitacao, int id) {
 		atualizaMemDisponivel();
 		int count = 0; // total de memoria livre fragmentada
 
-		// arrumar o retorno de fragmentação externa
 		if (solicitacao < totalMemoriaDisponivel) {
 			if (searchBlocoCompativel(solicitacao)) {
 				return true;
+			} else {
+				addAguardando(solicitacao);
+
 			}
 			for (Bloco b : memoriaLivre) {
 				count += b.getTamBloco();
-
-				// System.out.println("Total de blocos de memoria dos blocos fragmentados" +
-				// count);
 			}
+
 			if (count >= solicitacao) {
-				System.out.println( "Memoria livre: "+totalMemoriaDisponivel + " | " + "solicitados : " + solicitacao
+				System.out.println("Memoria livre: " + totalMemoriaDisponivel + " | " + "solicitados : " + solicitacao
 						+ " - fragmentação externa.");
 				return false;
 			}
-		} else
-			System.out.println("Não há memoria disponivel! | Total de memoria :" + totalMemoriaDisponivel);
+
+		}
+
+		System.out.println("Não há memoria disponivel! | Total de memoria fragmentada disponivel :"
+				+ totalMemoriaDisponivel + " Solicitado: " + solicitacao);
+
 		return false;
+	}
+
+	public boolean atendeListaAguardando(int id) {
+
+		for (int x : aguardando) {
+			if (verificaMemDisponivel(x, id)) {
+				addBlocoMemoriaOcupada(x, id);
+				aguardando.remove(aguardando.contains(x));
+				return true;
+			}
+
+		}
+		return false;
+
 	}
 
 	// retorna o bloco inicial com a memoria disponivel
@@ -135,11 +160,14 @@ public class Gerente {
 		for (Bloco x : memoriaOcupada) {
 			if (x.getID() == id) {
 				addMemoriaLivre(x); // adiciona bloco na lista de memoria disponível
-				removeMemoriaOcupada(x); // remove bloco da lista de memoria ocupada
+				// removeMemoriaOcupada(x); // remove bloco da lista de memoria ocupada
+				memoriaOcupada.remove(x);
 				atualizaMemDisponivel(); // atualiza o tamanho total de memoria disponivel
+
 				return true;
 			}
 		}
+		System.out.println("Não é possivel liberar o bloco com id " + id + ". Bloco não encontrado na lista!");
 		return false;
 	}
 
@@ -168,32 +196,22 @@ public class Gerente {
 	}
 
 	// remove bloco da lista de memoria ocupada
-	public void removeMemoriaOcupada(Bloco b) {
-		int count = 0;
 
-		try {// verifica se o bloco existe
-			for (Bloco x : memoriaOcupada) {
-				if (b.getID() == x.getID()) {
-					memoriaOcupada.remove(count);
-				}
-				count++;
+	public Bloco serachBlocoListaMemoriaOcupada(Bloco b) {
+		int count = 1;
+		for (Bloco x : memoriaOcupada) {
+			if (b.getID() == x.getID()) {
+				memoriaOcupada.remove(count);
 			}
-		} catch (Exception e) { // retorna mensagem de que o bloco não foi encontrado
-			// TODO: handle exception
-			System.out.println("Não é possivel liberar o bloco. Bloco não encontrado na lista!");
+			count++;
 		}
-
-	}
-
-	// retorna o ultimo bloco da lista de memoria ocupada
-	public Bloco getUltimoBloco() {
-		return memoriaOcupada.getLast();
+		return b;
 	}
 
 	public void printListaLivre() {
 		System.out.println("Memoria Livre");
 		for (Bloco b : memoriaLivre) {
-			System.out.println(" " + b.toString());
+			System.out.println(" " + b.toString() + " livre" + "(tamanho " + b.getTamBloco() + " )");
 		}
 	}
 
@@ -201,7 +219,7 @@ public class Gerente {
 	public void printListaMemoriaOcupada() {
 		System.out.println("Memoria ocupada");
 		for (Bloco b : memoriaOcupada) {
-			System.out.println(" " + b.toString());
+			System.out.println(" " + b.toString() + " | Bloco - " + b.getID() + " (tamanho " + b.getTamBloco() + " )");
 		}
 	}
 

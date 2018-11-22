@@ -50,7 +50,7 @@ public class Bloco {
 	}
 
 	public String toString() {
-		return this.start + "-" + this.end + " | Bloco - " + ID;
+		return this.start + "-" + this.end ;
 	}
 
 }

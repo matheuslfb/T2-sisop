@@ -40,36 +40,43 @@ public class App {
 		int solicitacao = 0;// tamanho da solicitacao de alocacao de memoria para cada bloco
 
 		try {
+			
 			while ((line = in.readLine()) != null) {// faz a leitura do arquivo
 				String info[] = line.split(" ");
-
-				// for (String a : info) { // print teste
-				// System.out.println(a);
-				// }
-
 				if (info[0].equals("S")) { // verifica se o comando lido é de solicitacao
 
 					solicitacao = Integer.parseInt(info[1]);// tamanho solicitado do bloco
 
-					if (g.verificaMemDisponivel(solicitacao)) {
+					if (g.verificaMemDisponivel(solicitacao, count)) {
 						g.addBlocoMemoriaOcupada(solicitacao, count);
 						count++;
 						// System.out.println("Tamanho total de memoria disponivel: " +
 						// g.getMemoriaDisponivel());
-					} else if (!g.verificaMemDisponivel(solicitacao)) {
+					} else if (!g.verificaMemDisponivel(solicitacao, count)) {
 					}
-
 				}
 				if (info[0].equals("L")) {
 					g.liberaBloco(Integer.parseInt(info[1]));
 				}
-
-
 			}
+			
+			
 			in.close();
 		} catch (FileNotFoundException e) {
 			System.err.print(e);
 		}
+		
+		try {
+			if(!g.atendeListaAguardando(count)) {
+				System.out.println("Não há memoria disponivel! | Total de memoria fragmentada disponivel :"
+						+ g.getMemoriaDisponivel() + " Solicitado: " + solicitacao);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+			
+		
 		g.printListaMemoriaOcupada();
 		g.printListaLivre();
 		System.out.println("Quantidade de solicitações: " + count);
