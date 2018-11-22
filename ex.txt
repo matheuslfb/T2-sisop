@@ -1,10 +1,33 @@
-1
-100
-1250
-S 250
-S 100
-S 200
-L 0
-L 1
-L 2
-S 400
+Digite o nome do arquivo de entrada (sem extensão .txt)
+c
+
+====================================================================================
+100-350
+350-450
+450-650
+
+[350-450, 650-1250]
+Bloco 2 encontrado! Memoria liberada.
+650-800
+800-950
+950-1100
+
+[350-450, 800-950, 1100-1250]
+Bloco 5 encontrado! Memoria liberada.
+Memoria livre: 400 | solicitados : 200 - fragmentação externa.
+Memoria livre: 400 | solicitados : 200 - fragmentação externa.
+
+[350-450, 450-650, 800-950, 1100-1250]
+Bloco 3 encontrado! Memoria liberada.
+450-650
+Memoria ocupada
+ 100-350 | Bloco - 1 (tamanho 250 )
+ 650-800 | Bloco - 4 (tamanho 150 )
+ 950-1100 | Bloco - 6 (tamanho 150 )
+ 450-650 | Bloco - 7 (tamanho 200 )
+Memoria Livre
+ 350-450 livre(tamanho 100 )
+ 650-650 livre(tamanho 0 )
+ 800-950 livre(tamanho 150 )
+ 1100-1250 livre(tamanho 150 )
+Quantidade de solicitações: 7
